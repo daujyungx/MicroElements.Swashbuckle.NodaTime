@@ -31,6 +31,8 @@ namespace MicroElements.Swashbuckle.NodaTime
         /// </summary>
         public bool ShouldGenerateExamples { get; }
 
+        public DateTimeOffset? Example { get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NodaTimeSchemaSettings"/> class.
         /// </summary>
@@ -38,16 +40,19 @@ namespace MicroElements.Swashbuckle.NodaTime
         /// <param name="formatToJson">Function that formats object as json text.</param>
         /// <param name="shouldGenerateExamples">Should the example node be generated.</param>
         /// <param name="dateTimeZoneProvider"><see cref="IDateTimeZoneProvider"/> configured in Startup.</param>
+        /// <param name="example"></param>
         public NodaTimeSchemaSettings(
             Func<string, string> resolvePropertyName,
             Func<object, string> formatToJson,
             bool shouldGenerateExamples,
-            IDateTimeZoneProvider dateTimeZoneProvider = null)
+            IDateTimeZoneProvider dateTimeZoneProvider = null,
+            DateTimeOffset? example = null)
         {
             ResolvePropertyName = resolvePropertyName;
             FormatToJson = formatToJson;
             ShouldGenerateExamples = shouldGenerateExamples;
             DateTimeZoneProvider = dateTimeZoneProvider;
+            Example = example;
         }
     }
 }

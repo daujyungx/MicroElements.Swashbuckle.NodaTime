@@ -24,12 +24,14 @@ namespace MicroElements.Swashbuckle.NodaTime
         /// <param name="shouldGenerateExamples">Optional if we should generate examples</param>
         /// <param name="configureSerializerSettings">Optional action to configure serializerSettings.</param>
         /// <param name="dateTimeZoneProvider">Optional DateTimeZoneProviders.</param>
+        /// <param name="example"></param>
         public static void ConfigureForNodaTime(
             this SwaggerGenOptions config,
             JsonSerializerSettings serializerSettings = null,
             bool shouldGenerateExamples = true,
             Action<JsonSerializerSettings> configureSerializerSettings = null,
-            IDateTimeZoneProvider dateTimeZoneProvider = null)
+            IDateTimeZoneProvider dateTimeZoneProvider = null,
+            DateTimeOffset? example = null)
         {
             serializerSettings = serializerSettings ?? new JsonSerializerSettings();
             configureSerializerSettings?.Invoke(serializerSettings);
@@ -40,7 +42,7 @@ namespace MicroElements.Swashbuckle.NodaTime
                 serializerSettings.ConfigureForNodaTime(dateTimeZoneProvider ?? DateTimeZoneProviders.Tzdb);
             }
 
-            var nodaTimeSchemaSettings = serializerSettings.CreateNodaTimeSchemaSettingsForNewtonsoftJson(shouldGenerateExamples);
+            var nodaTimeSchemaSettings = serializerSettings.CreateNodaTimeSchemaSettingsForNewtonsoftJson(shouldGenerateExamples, example: example);
             config.ConfigureForNodaTime(nodaTimeSchemaSettings);
         }
 
@@ -53,12 +55,14 @@ namespace MicroElements.Swashbuckle.NodaTime
         /// /// <param name="shouldGenerateExamples">Optional if we should generate examples</param>
         /// <param name="configureSerializerOptions">Optional action to configure jsonSerializerOptions.</param>
         /// <param name="dateTimeZoneProvider">Optional DateTimeZoneProviders.</param>
+        /// <param name="example"></param>
         public static void ConfigureForNodaTimeWithSystemTextJson(
             this SwaggerGenOptions config,
             JsonSerializerOptions jsonSerializerOptions = null,
             bool shouldGenerateExamples = true,
             Action<JsonSerializerOptions> configureSerializerOptions = null,
-            IDateTimeZoneProvider dateTimeZoneProvider = null)
+            IDateTimeZoneProvider dateTimeZoneProvider = null,
+            DateTimeOffset? example = null)
         {
             jsonSerializerOptions = jsonSerializerOptions ?? new JsonSerializerOptions();
             configureSerializerOptions?.Invoke(jsonSerializerOptions);
@@ -66,7 +70,7 @@ namespace MicroElements.Swashbuckle.NodaTime
             global::NodaTime.Serialization.SystemTextJson.Extensions.ConfigureForNodaTime(jsonSerializerOptions,
                 dateTimeZoneProvider ?? DateTimeZoneProviders.Tzdb);
 
-            var nodaTimeSchemaSettings = jsonSerializerOptions.CreateNodaTimeSchemaSettingsForSystemTextJson(shouldGenerateExamples);
+            var nodaTimeSchemaSettings = jsonSerializerOptions.CreateNodaTimeSchemaSettingsForSystemTextJson(shouldGenerateExamples, example: example);
             config.ConfigureForNodaTime(nodaTimeSchemaSettings);
         }
 
@@ -80,32 +84,32 @@ namespace MicroElements.Swashbuckle.NodaTime
             config.ParameterFilter<NamingPolicyParameterFilter>(nodaTimeSchemaSettings);
 
             Schemas schemas = new SchemasFactory(nodaTimeSchemaSettings).CreateSchemas();
-            config.MapType<Instant>        (schemas.Instant);
-            config.MapType<LocalDate>      (schemas.LocalDate);
-            config.MapType<LocalTime>      (schemas.LocalTime);
-            config.MapType<LocalDateTime>  (schemas.LocalDateTime);
-            config.MapType<OffsetDateTime> (schemas.OffsetDateTime);
-            config.MapType<ZonedDateTime>  (schemas.ZonedDateTime);
-            config.MapType<Interval>       (schemas.Interval);
-            config.MapType<DateInterval>   (schemas.DateInterval);
-            config.MapType<Offset>         (schemas.Offset);
-            config.MapType<Period>         (schemas.Period);
-            config.MapType<Duration>       (schemas.Duration);
-            config.MapType<OffsetDate>     (schemas.OffsetDate);
-            config.MapType<OffsetTime>     (schemas.OffsetTime);
-            config.MapType<DateTimeZone>   (schemas.DateTimeZone);
+            config.MapType<Instant>(schemas.Instant);
+            config.MapType<LocalDate>(schemas.LocalDate);
+            config.MapType<LocalTime>(schemas.LocalTime);
+            config.MapType<LocalDateTime>(schemas.LocalDateTime);
+            config.MapType<OffsetDateTime>(schemas.OffsetDateTime);
+            config.MapType<ZonedDateTime>(schemas.ZonedDateTime);
+            config.MapType<Interval>(schemas.Interval);
+            config.MapType<DateInterval>(schemas.DateInterval);
+            config.MapType<Offset>(schemas.Offset);
+            config.MapType<Period>(schemas.Period);
+            config.MapType<Duration>(schemas.Duration);
+            config.MapType<OffsetDate>(schemas.OffsetDate);
+            config.MapType<OffsetTime>(schemas.OffsetTime);
+            config.MapType<DateTimeZone>(schemas.DateTimeZone);
 
-            config.MapType<Instant?>       (schemas.Instant);
-            config.MapType<LocalDate?>     (schemas.LocalDate);
-            config.MapType<LocalTime?>     (schemas.LocalTime);
-            config.MapType<LocalDateTime?> (schemas.LocalDateTime);
+            config.MapType<Instant?>(schemas.Instant);
+            config.MapType<LocalDate?>(schemas.LocalDate);
+            config.MapType<LocalTime?>(schemas.LocalTime);
+            config.MapType<LocalDateTime?>(schemas.LocalDateTime);
             config.MapType<OffsetDateTime?>(schemas.OffsetDateTime);
-            config.MapType<ZonedDateTime?> (schemas.ZonedDateTime);
-            config.MapType<Interval?>      (schemas.Interval);
-            config.MapType<Offset?>        (schemas.Offset);
-            config.MapType<Duration?>      (schemas.Duration);
-            config.MapType<OffsetDate?>    (schemas.OffsetDate);
-            config.MapType<OffsetTime?>    (schemas.OffsetTime);
+            config.MapType<ZonedDateTime?>(schemas.ZonedDateTime);
+            config.MapType<Interval?>(schemas.Interval);
+            config.MapType<Offset?>(schemas.Offset);
+            config.MapType<Duration?>(schemas.Duration);
+            config.MapType<OffsetDate?>(schemas.OffsetDate);
+            config.MapType<OffsetTime?>(schemas.OffsetTime);
         }
     }
 

@@ -35,7 +35,7 @@ namespace MicroElements.Swashbuckle.NodaTime
         {
             IDateTimeZoneProvider dateTimeZoneProvider = _settings.DateTimeZoneProvider ?? DateTimeZoneProviders.Tzdb;
             var dateTimeZone = dateTimeZoneProvider.GetSystemDefault();
-            var instant = Instant.FromDateTimeUtc(DateTime.UtcNow);
+            var instant = Instant.FromDateTimeUtc(_settings.Example?.UtcDateTime ?? DateTime.UtcNow);
             var zonedDateTime = instant.InZone(dateTimeZone);
             var interval = new Interval(instant,
                 instant.PlusTicks(TimeSpan.TicksPerDay)

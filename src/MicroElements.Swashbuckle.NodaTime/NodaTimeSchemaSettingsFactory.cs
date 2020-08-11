@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NodaTime;
@@ -16,11 +17,13 @@ namespace MicroElements.Swashbuckle.NodaTime
         /// <param name="serializerSettings"><see cref="JsonSerializerSettings"/>.</param>
         /// <param name="shouldGenerateExamples">Should the example node be generated.</param>
         /// <param name="dateTimeZoneProvider">Optional <see cref="IDateTimeZoneProvider"/>.</param>
+        /// <param name="example"></param>
         /// <returns><see cref="NodaTimeSchemaSettings"/>.</returns>
         public static NodaTimeSchemaSettings CreateNodaTimeSchemaSettingsForNewtonsoftJson(
             this JsonSerializerSettings serializerSettings,
             bool shouldGenerateExamples = true,
-            IDateTimeZoneProvider dateTimeZoneProvider = null)
+            IDateTimeZoneProvider dateTimeZoneProvider = null,
+            DateTimeOffset? example = null)
         {
             string FormatToJson(object value)
             {
@@ -35,7 +38,7 @@ namespace MicroElements.Swashbuckle.NodaTime
                 return (serializerSettings.ContractResolver as DefaultContractResolver)?.GetResolvedPropertyName(propertyName) ?? propertyName;
             }
 
-            return new NodaTimeSchemaSettings(ResolvePropertyName, FormatToJson, shouldGenerateExamples, dateTimeZoneProvider);
+            return new NodaTimeSchemaSettings(ResolvePropertyName, FormatToJson, shouldGenerateExamples, dateTimeZoneProvider, example);
         }
 
         /// <summary>
@@ -44,11 +47,13 @@ namespace MicroElements.Swashbuckle.NodaTime
         /// <param name="jsonSerializerOptions"><see cref="JsonSerializerOptions"/>.</param>
         /// <param name="shouldGenerateExamples">Should the example node be generated.</param>
         /// <param name="dateTimeZoneProvider">Optional <see cref="IDateTimeZoneProvider"/>.</param>
+        /// <param name="example"></param>
         /// <returns><see cref="NodaTimeSchemaSettings"/>.</returns>
         public static NodaTimeSchemaSettings CreateNodaTimeSchemaSettingsForSystemTextJson(
             this JsonSerializerOptions jsonSerializerOptions,
             bool shouldGenerateExamples = true,
-            IDateTimeZoneProvider dateTimeZoneProvider = null)
+            IDateTimeZoneProvider dateTimeZoneProvider = null,
+            DateTimeOffset? example = null)
         {
             string FormatToJson(object value)
             {
@@ -63,7 +68,7 @@ namespace MicroElements.Swashbuckle.NodaTime
                 return jsonSerializerOptions.PropertyNamingPolicy?.ConvertName(propertyName) ?? propertyName;
             }
 
-            return new NodaTimeSchemaSettings(ResolvePropertyName, FormatToJson, shouldGenerateExamples, dateTimeZoneProvider);
+            return new NodaTimeSchemaSettings(ResolvePropertyName, FormatToJson, shouldGenerateExamples, dateTimeZoneProvider, example);
         }
     }
 }
